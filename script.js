@@ -1,48 +1,57 @@
 const students = [];
 
-document.getElementById("studentForm").addEventListener("submit", function(e) {
+const form = document.getElementById("studentForm");
+const nameInput = document.getElementById("name");
+const lastNameInput = document.getElementById("lastName");
+const gradeInput = document.getElementById("grade");
+
+form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Obtener valores
-    const name = document.getElementById("name").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const grade = parseFloat(document.getElementById("grade").value);
+    // Limpiar mensajes previos
+    nameInput.setCustomValidity("");
+    lastNameInput.setCustomValidity("");
+    gradeInput.setCustomValidity("");
 
-    // Limpiar mensajes anteriores
-    document.getElementById("errorName").textContent = "";
-    document.getElementById("errorLastName").textContent = "";
-    document.getElementById("errorGrade").textContent = "";
-
-    let hasError = false;
-
-    // Validaciones y mensajes de error en español
-    if (!name) {
-        document.getElementById("errorName").textContent = "Por favor ingrese el nombre.";
-        hasError = true;
-    }
-    if (!lastName) {
-        document.getElementById("errorLastName").textContent = "Por favor ingrese el apellido.";
-        hasError = true;
-    }
-    if (isNaN(grade) || grade < 1 || grade > 7) {
-        document.getElementById("errorGrade").textContent = "Ingrese una nota válida entre 1.0 y 7.0.";
-        hasError = true;
+    // Validar nombre
+    if (!nameInput.value.trim()) {
+        nameInput.setCustomValidity("Por favor, complete el campo Nombre.");
     }
 
-    if (hasError) return;
+    // Validar apellido
+    if (!lastNameInput.value.trim()) {
+        lastNameInput.setCustomValidity("Por favor, complete el campo Apellido.");
+    }
 
-    // Crear estudiante y agregar al arreglo
-    const student = { name, lastName, grade };
+    // Validar nota
+    if (!gradeInput.value) {
+        gradeInput.setCustomValidity("Por favor, complete el campo Nota.");
+    } else {
+        const grade = parseFloat(gradeInput.value);
+        if (grade < 1 || grade > 7) {
+            gradeInput.setCustomValidity("La nota debe estar entre 1.0 y 7.0.");
+        }
+    }
+
+    // Si hay algún error, mostrar burbujas y no continuar
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    // Si pasa validación, guardar datos
+    const student = {
+        name: nameInput.value.trim(),
+        lastName: lastNameInput.value.trim(),
+        grade: parseFloat(gradeInput.value),
+    };
+
     students.push(student);
-
-    // Mostrar en tabla
     addStudentToTable(student);
-
-    // Calcular promedio
     calcularPromedio();
+    mostrarTabla();
 
-    // Limpiar formulario
-    this.reset();
+    form.reset();
 });
 
 const tableBody = document.querySelector("#studentTable tbody");
@@ -68,5 +77,12 @@ function calcularPromedio() {
     const total = students.reduce((sum, student) => sum + student.grade, 0);
     const promedio = total / students.length;
 
-    promedioDiv.textContent = `Promedio General del Curso: ${promedio.toFixed(2)}`;
+    promedioDiv.textContent = `Promedio de Notas: ${promedio.toFixed(2)}`;
+}
+
+function mostrarTabla() {
+    const table = document.getElementById("studentTable");
+    if (students.length > 0) {
+        table.classList.remove("hidden");
+    }
 }

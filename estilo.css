@@ -87,6 +87,11 @@ th {
     background-color: #f4f4f4;
 }
 
+/* Ocultar tabla */
+.hidden {
+    display: none;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .form-group, button, .average {
