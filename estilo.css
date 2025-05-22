@@ -14,14 +14,22 @@ body {
     padding: 30px;
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    transform: perspective(1000px);
-    transition: transform 0.3s ease;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa para profundidad */
+    transform: perspective(1500px) scale(0.7) translateZ(-500px); /* Inicialmente más pequeño y lejos */
+    opacity: 0; /* Comienza invisible */
+    animation: emerge 1.5s ease-out forwards; /* Animación de emergencia */
 }
 
-/* Hover 3D para el contenedor principal */
-.container:hover {
-    transform: perspective(1000px) rotateY(5deg);
+/* Animación para "emergir" desde el fondo */
+@keyframes emerge {
+    0% {
+        transform: perspective(1500px) scale(0.7) translateZ(-500px); /* Al principio pequeño y lejos */
+        opacity: 0; /* Invisible al inicio */
+    }
+    100% {
+        transform: perspective(1500px) scale(1) translateZ(0); /* Finaliza en su tamaño normal */
+        opacity: 1; /* Totalmente visible al final */
+    }
 }
 
 /* Título */
@@ -31,10 +39,10 @@ h2 {
     color: #333;
     font-size: 2.2rem;
     font-weight: 600;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Promedio de notas (Ahora como porcentaje) */
+/* Promedio de notas */
 .average {
     font-size: 1.5rem;
     font-weight: bold;
@@ -44,19 +52,13 @@ h2 {
     text-align: center;
     border-radius: 8px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Sombra sutil */
     transform: perspective(1000px);
     transition: transform 0.3s ease;
 }
 
 .average:hover {
-    transform: scale(1.05);
-}
-
-.average span {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #333;
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
 }
 
 /* Formulario */
@@ -83,7 +85,7 @@ input[type="date"] {
     box-sizing: border-box;
     margin-top: 5px;
     background-color: #fafafa;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 input[type="text"]:focus,
@@ -104,13 +106,13 @@ button {
     font-size: 1rem;
     width: 100%;
     margin-top: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
     transition: all 0.3s ease;
 }
 
 button:hover {
     background-color: #218838;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Aumenta la sombra */
 }
 
 button:active {

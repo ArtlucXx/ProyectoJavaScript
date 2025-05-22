@@ -6,6 +6,8 @@ const lastNameInput = document.getElementById("lastName");
 const gradeInput = document.getElementById("grade");
 const dateInput = document.getElementById("date");
 
+let studentBeingEdited = null;
+
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -46,20 +48,36 @@ form.addEventListener("submit", function (e) {
         return;
     }
 
-    // Si pasa validación, guardar datos
     const student = {
         name: nameInput.value.trim(),
         lastName: lastNameInput.value.trim(),
         grade: parseFloat(gradeInput.value),
-        date: dateInput.value,
+        date: dateInput.value,  // Mantener la fecha tal cual está en formato "yyyy-mm-dd"
     };
 
-    students.push(student);
-    addStudentToTable(student);
+    if (studentBeingEdited) {
+        // Actualizar los datos del estudiante editado
+        studentBeingEdited.name = student.name;
+        studentBeingEdited.lastName = student.lastName;
+        studentBeingEdited.grade = student.grade;
+        studentBeingEdited.date = student.date;
+        
+        // Limpiar la referencia de estudiante editado
+        studentBeingEdited = null;
+
+        // Cambiar el texto del botón de vuelta a "Agregar estudiante"
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.textContent = "Agregar estudiante";
+    } else {
+        // Agregar el nuevo estudiante al array
+        students.push(student);
+    }
+
+    renderTable();  // Vuelve a renderizar la tabla después de agregar o editar
     calcularPromedio();
     mostrarTabla();
 
-    form.reset();
+    form.reset();  // Limpiar el formulario
 });
 
 const tableBody = document.querySelector("#studentTable tbody");
@@ -71,20 +89,48 @@ function addStudentToTable(student) {
         <td>${student.name}</td>
         <td>${student.lastName}</td>
         <td>${student.grade.toFixed(1)}</td>
-        <td>${formatDate(student.date)}</td>  <!-- Cambié aquí -->
-        <td><button class="delete-btn" onclick="deleteStudent('${student.name}', '${student.lastName}')">
+        <td>${formatDate(student.date)}</td>
+        <td>
+            <button class="delete-btn" onclick="deleteStudent('${student.name}', '${student.lastName}')">
                 <i class="fas fa-trash-alt"></i>
-            </button></td>
+            </button>
+            <button class="edit-btn" onclick="editStudent('${student.name}', '${student.lastName}')">
+                <i class="fas fa-edit"></i>
+            </button>
+        </td>
     `;
 
     tableBody.appendChild(row);
 }
 
-// Función para formatear la fecha
+// Función para formatear la fecha correctamente
 function formatDate(dateString) {
-    const date = new Date(dateString);
+    // Convertimos la fecha a un objeto Date sin zona horaria, manteniendo el formato original
+    const [year, month, day] = dateString.split('-'); // Separar la fecha en partes
+    const date = new Date(year, month - 1, day); // Crear una nueva fecha
+
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('es-ES', options);  // Cambié aquí para usar "es-ES"
+    return date.toLocaleDateString('es-ES', options); // Formatear la fecha en español
+}
+
+function editStudent(name, lastName) {
+    // Buscar el estudiante en el array de estudiantes
+    const student = students.find(student => student.name === name && student.lastName === lastName);
+
+    if (student) {
+        // Establecer el estudiante a editar
+        studentBeingEdited = student;
+
+        // Cargar los datos en el formulario
+        nameInput.value = student.name;
+        lastNameInput.value = student.lastName;
+        gradeInput.value = student.grade;
+        dateInput.value = student.date;
+        
+        // Cambiar el texto del botón para indicar que estamos editando
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.textContent = "Actualizar estudiante";
+    }
 }
 
 function deleteStudent(name, lastName) {
@@ -113,7 +159,8 @@ function calcularPromedio() {
     const total = students.reduce((sum, student) => sum + student.grade, 0);
     const promedio = total / students.length;
 
-    promedioDiv.textContent = `Promedio de Notas: ${promedio.toFixed(2)}%`;  // Cambié para que se vea como porcentaje
+    // Mostrar solo el número sin el símbolo de porcentaje
+    promedioDiv.textContent = `Promedio de Notas: ${promedio.toFixed(2)}`;
 }
 
 function mostrarTabla() {
