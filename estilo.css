@@ -1,51 +1,99 @@
 /* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
+    background-color: #f0f4f8;
     margin: 0;
     padding: 20px;
-}
-
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.average {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    font-weight: bold;
     color: #444;
 }
 
+/* Contenedor principal */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    transform: perspective(1000px);
+    transition: transform 0.3s ease;
+}
+
+/* Hover 3D para el contenedor principal */
+.container:hover {
+    transform: perspective(1000px) rotateY(5deg);
+}
+
+/* Título */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 2.2rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Promedio de notas (Ahora como porcentaje) */
+.average {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+    background-color: #f4f4f4;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: perspective(1000px);
+    transition: transform 0.3s ease;
+}
+
+.average:hover {
+    transform: scale(1.05);
+}
+
+.average span {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Formulario */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-weight: 600;
+    font-size: 1.1rem;
+    color: #555;
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+input[type="date"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    font-size: 1rem;
     box-sizing: border-box;
+    margin-top: 5px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease;
 }
 
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+}
+
+/* Botón de Agregar */
 button {
     background-color: #28a745;
     color: #fff;
@@ -54,17 +102,26 @@ button {
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
-    display: block;
     width: 100%;
+    margin-top: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 button:hover {
     background-color: #218838;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
+button:active {
+    transform: scale(0.98);
+}
+
+/* Mensajes de error */
 .error {
     color: red;
     font-size: 0.9rem;
+    margin-top: 5px;
 }
 
 /* Tabla */
@@ -76,25 +133,69 @@ table {
 
 table, th, td {
     border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 th, td {
-    padding: 12px;
+    padding: 15px;
     text-align: center;
 }
 
 th {
     background-color: #f4f4f4;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
-/* Ocultar tabla */
-.hidden {
-    display: none;
+td {
+    background-color: #fafafa;
+    font-size: 1.1rem;
+}
+
+td:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Botón de eliminar con ícono de basurero */
+button.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+button.delete-btn:hover {
+    background-color: #c82333;
+}
+
+button.delete-btn i {
+    margin-right: 0; /* No hay espacio entre el ícono y el texto */
+}
+
+/* Efecto de sombra en botones */
+button, button.delete-btn {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+button:hover, button.delete-btn:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */
 @media (max-width: 600px) {
     .form-group, button, .average {
         text-align: left;
+    }
+
+    table, th, td {
+        font-size: 0.9rem;
     }
 }
