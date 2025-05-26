@@ -1,77 +1,94 @@
-/* Estilos generales */
+/* === ESTILO TECNOLÓGICO Y DETALLADO === */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap');
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     margin: 0;
     padding: 20px;
-    color: #444;
+    color: #fff;
 }
 
-/* Contenedor principal */
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #1b1b2f, #222245);
+  box-shadow: inset 2px 2px 5px #14142a, inset -2px -2px 5px #2a2a4a;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  perspective: 800px;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="date"]:hover {
+  box-shadow: 0 0 12px #00e0ff, inset 0 0 8px #00e0ff;
+  transform: scale(1.02) rotateX(2deg);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: 0 0 20px #00e0ff, inset 0 0 10px #00e0ff;
+  transform: scale(1.03) rotateX(3deg);
+  background-color: #1f1f3a;
+}
+
+
 .container {
-    max-width: 900px;
+    max-width: 960px;
     margin: auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa para profundidad */
-    transform: perspective(1500px) scale(0.7) translateZ(-500px); /* Inicialmente más pequeño y lejos */
-    opacity: 0; /* Comienza invisible */
-    animation: emerge 1.5s ease-out forwards; /* Animación de emergencia */
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 1.5s ease;
 }
 
-/* Animación para "emergir" desde el fondo */
-@keyframes emerge {
-    0% {
-        transform: perspective(1500px) scale(0.7) translateZ(-500px); /* Al principio pequeño y lejos */
-        opacity: 0; /* Invisible al inicio */
-    }
-    100% {
-        transform: perspective(1500px) scale(1) translateZ(0); /* Finaliza en su tamaño normal */
-        opacity: 1; /* Totalmente visible al final */
-    }
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Título */
 h2 {
     text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 2.2rem;
-    font-weight: 600;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+    font-size: 2.5rem;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(0, 224, 255, 0.3);
 }
 
-/* Promedio de notas */
 .average {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #4CAF50;
-    background-color: #f4f4f4;
-    padding: 15px;
+    color: #00e0ff;
+    background-color: #1e1e2f;
+    padding: 16px;
+    border-radius: 12px;
     text-align: center;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Sombra sutil */
-    transform: perspective(1000px);
-    transition: transform 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 224, 255, 0.4);
+    margin-bottom: 25px;
 }
 
-.average:hover {
-    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
-}
-
-/* Formulario */
 .form-group {
     margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
     font-weight: 600;
-    font-size: 1.1rem;
-    color: #555;
+    margin-bottom: 6px;
+    color: #ccc;
 }
 
 input[type="text"],
@@ -79,125 +96,213 @@ input[type="number"],
 input[type="date"] {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    margin-top: 5px;
-    background-color: #fafafa;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-input[type="date"]:focus {
-    border-color: #4CAF50;
-    background-color: #e8f5e9;
-}
-
-/* Botón de Agregar */
-button {
-    background-color: #28a745;
+    background-color: #1c1c2b;
     color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    width: 100%;
-    margin-top: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #218838;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Aumenta la sombra */
+input:focus {
+    border-color: #00e0ff;
+    outline: none;
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-/* Mensajes de error */
 .error {
-    color: red;
+    color: #ff6b6b;
     font-size: 0.9rem;
     margin-top: 5px;
 }
 
-/* Tabla */
+button {
+    background-color: #00e0ff;
+    color: #1e1e2f;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0, 224, 255, 0.3);
+    transition: background 0.3s ease, transform 0.2s;
+}
+
+button:hover {
+    background-color: #00c4e0;
+    transform: translateY(-2px);
+}
+
+.monito {
+    width: 28px;
+    height: 28px;
+    background: url('https://cdn-icons-png.flaticon.com/512/4140/4140047.png') no-repeat center center;
+    background-size: contain;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 25px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    margin-top: 30px;
 }
 
 th, td {
-    padding: 15px;
+    padding: 14px;
+    border: 1px solid #444;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.03);
+    color: #fff;
 }
 
 th {
-    background-color: #f4f4f4;
-    font-size: 1.1rem;
-    font-weight: 600;
+    background-color: #282846;
+    color: #00e0ff;
 }
 
-td {
-    background-color: #fafafa;
-    font-size: 1.1rem;
-}
-
-td:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Botón de eliminar con ícono de basurero */
-button.delete-btn {
-    background-color: #dc3545;
-    color: white;
+.delete-btn, .edit-btn {
+    background-color: transparent;
     border: none;
-    padding: 8px 16px;
-    border-radius: 50%;
     cursor: pointer;
     font-size: 1.2rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
+    margin: 0 5px;
+    color: #ff6b6b;
+    transition: transform 0.2s;
 }
 
-button.delete-btn:hover {
-    background-color: #c82333;
+.edit-btn {
+    color: #00e0ff;
 }
 
-button.delete-btn i {
-    margin-right: 0; /* No hay espacio entre el ícono y el texto */
+.delete-btn:hover, .edit-btn:hover {
+    transform: scale(1.2);
 }
 
-/* Efecto de sombra en botones */
-button, button.delete-btn {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-button:hover, button.delete-btn:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsive */
 @media (max-width: 600px) {
-    .form-group, button, .average {
-        text-align: left;
-    }
+    h2 { font-size: 1.8rem; }
+    .average { font-size: 1.1rem; }
+    table, th, td { font-size: 0.9rem; }
+}
+.hidden {
+  display: none !important;
+}
 
-    table, th, td {
-        font-size: 0.9rem;
-    }
+.input-icon {
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.input-icon::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 14px;
+  background: linear-gradient(60deg, #00e0ff, #00ffcc, #00e0ff, #00ffcc);
+  background-size: 300% 300%;
+  animation: borderGlowLoop 4s ease infinite;
+  z-index: 0;
+  filter: blur(6px);
+  opacity: 0.5;
+}
+
+/* input + ícono dentro del marco animado */
+.input-icon input {
+  width: 100%;
+  padding: 14px 16px 14px 42px;
+  border: none;
+  border-radius: 12px;
+  background: #1c1c2b;
+  color: #fff;
+  font-size: 1rem;
+  z-index: 1;
+  position: relative;
+  transition: 0.4s ease;
+  box-shadow: inset 0 0 8px rgba(0, 224, 255, 0.1);
+}
+
+.input-icon input:focus {
+  outline: none;
+  box-shadow: 0 0 12px #00e0ff, 0 0 30px #00e0ff;
+}
+
+/* ícono animado dentro */
+.input-icon i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #00e0ff;
+  font-size: 1.1rem;
+  pointer-events: none;
+  animation: iconPulse 2s infinite ease-in-out;
+  text-shadow: 0 0 5px #00e0ff;
+  z-index: 2;
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.1); }
+}
+
+@keyframes borderGlowLoop {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.error {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: rgba(0, 224, 255, 0.08);
+  border: 1px solid #00e0ff;
+  border-radius: 16px;
+  color: #00e0ff;
+  font-size: 0.85rem;
+  box-shadow: 0 0 12px rgba(0, 224, 255, 0.3);
+  position: relative;
+  animation: errorBubbleFade 0.4s ease-in-out;
+}
+
+@keyframes errorBubbleFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* Animación 3D al abrir el sitio */
+@keyframes emerge3D {
+  0% {
+    transform: perspective(800px) translateZ(-300px) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: perspective(800px) translateZ(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.container {
+  animation: emerge3D 1.2s ease-out;
+  transform-origin: center;
+  will-change: transform, opacity;
 }

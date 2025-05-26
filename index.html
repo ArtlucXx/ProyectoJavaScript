@@ -1,59 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Notas Front-End</title>
-    <link rel="stylesheet" href="estilo.css" />
-    <!-- Añadir FontAwesome para los íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notas Front-End</title>
+  <link rel="stylesheet" href="estilo.css" />
+
+  <!-- FontAwesome para íconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 </head>
 <body>
-    <div class="container">
-        <h2>Seguimiento de Notas de Estudiantes</h2>
+  <div class="container">
+    <h2>Seguimiento de Notas de Estudiantes</h2>
 
-        <div id="average" class="average">Promedio de Notas: N/A</div>
+    <div id="average" class="average">Promedio de Notas: N/A</div>
+    <div id="totalCount" class="average">0 estudiantes registrados</div>
 
-        <form id="studentForm" novalidate>
-            <div class="form-group">
-                <label for="name">Nombre:</label>
-                <input type="text" id="name" />
-                <span class="error" id="errorName"></span>
-            </div>
-            <div class="form-group">
-                <label for="lastName">Apellido:</label>
-                <input type="text" id="lastName" />
-                <span class="error" id="errorLastName"></span>
-            </div>
-            <div class="form-group">
-                <label for="grade">Nota (1.0 a 7.0):</label>
-                <input type="number" id="grade" step="0.1" min="1" max="7" />
-                <span class="error" id="errorGrade"></span>
-            </div>
-            <div class="form-group">
-                <label for="date">Fecha de Inscripción:</label>
-                <input type="date" id="date" />
-                <span class="error" id="errorDate"></span>
-            </div>
-            <button type="submit">Agregar estudiante</button>
-        </form>
+    <form id="studentForm" novalidate>
+      <div class="form-group input-icon">
+        <label for="name">Nombre:</label>
+        <i class="fas fa-user"></i>
+        <input type="text" id="name" placeholder="Nombre" />
+        <span class="error" id="errorName"></span>
+      </div>
 
-        <table id="studentTable" class="hidden">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Nota</th>
-                    <th>Fecha de Inscripción</th>
-                    <th>Acciones</th> <!-- Columna de acciones -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- contenido tabla -->
-            </tbody>
-        </table>
-    </div>
+      <div class="form-group input-icon">
+        <label for="lastName">Apellido:</label>
+        <i class="fas fa-user-tag"></i>
+        <input type="text" id="lastName" placeholder="Apellido" />
+        <span class="error" id="errorLastName"></span>
+      </div>
 
-    <script src="script.js"></script>
+      <div class="form-group input-icon">
+        <label for="grade">Nota (1.0 a 7.0):</label>
+        <i class="fas fa-pen-nib"></i>
+        <input type="number" id="grade" step="0.1" min="1" max="7" placeholder="Nota" />
+        <span class="error" id="errorGrade"></span>
+      </div>
+
+      <div class="form-group input-icon">
+        <label for="date">Fecha de Inscripción:</label>
+        <i class="fas fa-calendar-alt" id="calendarIcon"></i>
+        <input type="text" id="date" placeholder="Selecciona una fecha" />
+        <span class="error" id="errorDate"></span>
+      </div>
+
+      <button type="submit">Agregar estudiante</button>
+    </form>
+
+    <table id="studentTable" class="hidden">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Nota</th>
+          <th>Fecha de Inscripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- contenido tabla -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Script principal -->
+  <script src="script.js"></script>
+
+  <!-- Flatpickr JS + Español -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+  <script>
+    // Activar flatpickr en español
+    flatpickr("#date", {
+      dateFormat: "Y-m-d",
+      locale: "es",
+      altInput: true,
+      altFormat: "l, d \\de F \\de Y",
+      allowInput: true,
+      monthSelectorType: "static"
+    });
+
+    // Abrir calendario al hacer clic en el ícono
+    document.getElementById("calendarIcon").addEventListener("click", () => {
+      document.getElementById("date")._flatpickr.open();
+    });
+  </script>
 </body>
 </html>

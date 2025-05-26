@@ -1,185 +1,174 @@
-const students = [];
+const students = JSON.parse(localStorage.getItem("students")) || [];
+let editingIndex = null;
 
 const form = document.getElementById("studentForm");
 const nameInput = document.getElementById("name");
 const lastNameInput = document.getElementById("lastName");
 const gradeInput = document.getElementById("grade");
 const dateInput = document.getElementById("date");
-
-let studentBeingEdited = null;
+const promedioDiv = document.getElementById("average");
+const tableBody = document.querySelector("#studentTable tbody");
+const table = document.getElementById("studentTable");
+const totalCount = document.getElementById("totalCount");
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Limpiar mensajes previos
-    nameInput.setCustomValidity("");
-    lastNameInput.setCustomValidity("");
-    gradeInput.setCustomValidity("");
-    dateInput.setCustomValidity("");
+    const name = nameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+    const grade = parseFloat(gradeInput.value);
+    const date = dateInput.value;
 
-    // Validar nombre
-    if (!nameInput.value.trim()) {
-        nameInput.setCustomValidity("Por favor, complete el campo Nombre.");
-    }
+    let valid = true;
 
-    // Validar apellido
-    if (!lastNameInput.value.trim()) {
-        lastNameInput.setCustomValidity("Por favor, complete el campo Apellido.");
-    }
-
-    // Validar nota
-    if (!gradeInput.value) {
-        gradeInput.setCustomValidity("Por favor, complete el campo Nota.");
+    // Validación personalizada con mensajes bonitos
+    if (!name) {
+        document.getElementById("errorName").textContent = "Por favor, ingrese el nombre.";
+        valid = false;
     } else {
-        const grade = parseFloat(gradeInput.value);
-        if (grade < 1 || grade > 7) {
-            gradeInput.setCustomValidity("La nota debe estar entre 1.0 y 7.0.");
-        }
+        document.getElementById("errorName").textContent = "";
     }
 
-    // Validar fecha
-    if (!dateInput.value) {
-        dateInput.setCustomValidity("Por favor, agregue la fecha de inscripción.");
-    }
-
-    // Si hay algún error, mostrar burbujas y no continuar
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
-
-    const student = {
-        name: nameInput.value.trim(),
-        lastName: lastNameInput.value.trim(),
-        grade: parseFloat(gradeInput.value),
-        date: dateInput.value,  // Mantener la fecha tal cual está en formato "yyyy-mm-dd"
-    };
-
-    if (studentBeingEdited) {
-        // Actualizar los datos del estudiante editado
-        studentBeingEdited.name = student.name;
-        studentBeingEdited.lastName = student.lastName;
-        studentBeingEdited.grade = student.grade;
-        studentBeingEdited.date = student.date;
-        
-        // Limpiar la referencia de estudiante editado
-        studentBeingEdited = null;
-
-        // Cambiar el texto del botón de vuelta a "Agregar estudiante"
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.textContent = "Agregar estudiante";
+    if (!lastName) {
+        document.getElementById("errorLastName").textContent = "Por favor, ingrese el apellido.";
+        valid = false;
     } else {
-        // Agregar el nuevo estudiante al array
+        document.getElementById("errorLastName").textContent = "";
+    }
+
+    if (!grade || grade < 1 || grade > 7) {
+        document.getElementById("errorGrade").textContent = "Por favor, ingrese una nota válida (1.0 a 7.0).";
+        valid = false;
+    } else {
+        document.getElementById("errorGrade").textContent = "";
+    }
+
+    if (!date) {
+        document.getElementById("errorDate").textContent = "Por favor, seleccione la fecha.";
+        valid = false;
+    } else {
+        document.getElementById("errorDate").textContent = "";
+    }
+
+    if (!valid) return;
+
+    const student = { name, lastName, grade, date };
+
+    if (editingIndex !== null) {
+        students[editingIndex] = student;
+        editingIndex = null;
+    } else {
         students.push(student);
     }
 
-    renderTable();  // Vuelve a renderizar la tabla después de agregar o editar
-    calcularPromedio();
-    mostrarTabla();
-
-    form.reset();  // Limpiar el formulario
+    saveStudents();
+    form.reset();
+    renderTable();
+    updatePromedio();
+    updateCount();
+    table.classList.remove("hidden");
 });
 
-const tableBody = document.querySelector("#studentTable tbody");
-
-function addStudentToTable(student) {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td>${student.name}</td>
-        <td>${student.lastName}</td>
-        <td>${student.grade.toFixed(1)}</td>
-        <td>${formatDate(student.date)}</td>
-        <td>
-            <button class="delete-btn" onclick="deleteStudent('${student.name}', '${student.lastName}')">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-            <button class="edit-btn" onclick="editStudent('${student.name}', '${student.lastName}')">
-                <i class="fas fa-edit"></i>
-            </button>
-        </td>
-    `;
-
-    tableBody.appendChild(row);
-}
-
-// Función para formatear la fecha correctamente
-function formatDate(dateString) {
-    // Convertimos la fecha a un objeto Date sin zona horaria, manteniendo el formato original
-    const [year, month, day] = dateString.split('-'); // Separar la fecha en partes
-    const date = new Date(year, month - 1, day); // Crear una nueva fecha
-
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('es-ES', options); // Formatear la fecha en español
-}
-
-function editStudent(name, lastName) {
-    // Buscar el estudiante en el array de estudiantes
-    const student = students.find(student => student.name === name && student.lastName === lastName);
-
-    if (student) {
-        // Establecer el estudiante a editar
-        studentBeingEdited = student;
-
-        // Cargar los datos en el formulario
-        nameInput.value = student.name;
-        lastNameInput.value = student.lastName;
-        gradeInput.value = student.grade;
-        dateInput.value = student.date;
-        
-        // Cambiar el texto del botón para indicar que estamos editando
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.textContent = "Actualizar estudiante";
-    }
-}
-
-function deleteStudent(name, lastName) {
-    // Filtramos el estudiante por su nombre y apellido
-    const index = students.findIndex(student => student.name === name && student.lastName === lastName);
-    if (index !== -1) {
-        students.splice(index, 1); // Elimina el estudiante del array
-        renderTable();  // Vuelve a renderizar la tabla después de eliminar
-        calcularPromedio();
-    }
+function saveStudents() {
+    localStorage.setItem("students", JSON.stringify(students));
 }
 
 function renderTable() {
-    tableBody.innerHTML = '';  // Limpiar la tabla antes de re-renderizar
-    students.forEach(student => addStudentToTable(student));  // Volver a agregar las filas
+    tableBody.innerHTML = "";
+    students.forEach((student, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${student.name}</td>
+            <td>${student.lastName}</td>
+            <td>${student.grade.toFixed(1)}</td>
+            <td>${formatDate(student.date)}</td>
+            <td>
+                <button class="edit-btn" onclick="editStudent(${index})"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn" onclick="deleteStudent(${index})"><i class="fas fa-trash-alt"></i></button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
 }
 
-const promedioDiv = document.getElementById("average");
+function editStudent(index) {
+    const student = students[index];
+    nameInput.value = student.name;
+    lastNameInput.value = student.lastName;
+    gradeInput.value = student.grade;
+    dateInput.value = student.date;
+    editingIndex = index;
+}
 
-function calcularPromedio() {
+function deleteStudent(index) {
+    if (confirm("¿Estás seguro de eliminar este estudiante?")) {
+        students.splice(index, 1);
+        saveStudents();
+        renderTable();
+        updatePromedio();
+        updateCount();
+        if (students.length === 0) {
+            table.classList.add("hidden");
+            promedioDiv.textContent = "Promedio de Notas: N/A";
+            totalCount.textContent = "0 estudiantes registrados";
+        }
+    }
+}
+
+function updatePromedio() {
     if (students.length === 0) {
-        promedioDiv.textContent = "Promedio General del Curso: N/A";
+        promedioDiv.textContent = "Promedio de Notas: N/A";
         return;
     }
-
-    const total = students.reduce((sum, student) => sum + student.grade, 0);
+    const total = students.reduce((sum, s) => sum + s.grade, 0);
     const promedio = total / students.length;
-
-    // Mostrar solo el número sin el símbolo de porcentaje
     promedioDiv.textContent = `Promedio de Notas: ${promedio.toFixed(2)}`;
 }
 
-function mostrarTabla() {
-    const table = document.getElementById("studentTable");
-    if (students.length > 0) {
-        table.classList.remove("hidden");
-    }
+function updateCount() {
+    totalCount.textContent = `${students.length} estudiante${students.length !== 1 ? 's' : ''} registrado${students.length !== 1 ? 's' : ''}`;
 }
 
-// Validaciones de los campos "Nombre" y "Apellido" para evitar números
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
+}
+
+// Al cargar la página
+renderTable();
+updatePromedio();
+updateCount();
+if (students.length > 0) {
+    table.classList.remove("hidden");
+}
+
+// === RESTRICCIONES ===
+
+// Restringir números en nombre
 nameInput.addEventListener("input", function () {
-    this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // Reemplaza todo lo que no sea letra o espacio
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]/g, '');
 });
 
+// Restringir números en apellido
 lastNameInput.addEventListener("input", function () {
-    this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // Reemplaza todo lo que no sea letra o espacio
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]/g, '');
 });
 
-// Validación en el campo "Nota" para evitar letras
+// Restringir letras en nota (permitir solo números y punto)
 gradeInput.addEventListener("input", function () {
-    this.value = this.value.replace(/[^0-9\.]/g, ''); // Permite solo números y punto
+    this.value = this.value.replace(/[^0-9.]/g, '');
+});
+// Configurar Flatpickr en español
+flatpickr("#date", {
+  dateFormat: "Y-m-d",
+  locale: "es",
+  altInput: true,
+  altFormat: "l, d \\de F \\de Y", // Ej: lunes, 03 de junio de 2024
+  allowInput: true,
+  monthSelectorType: "static"
+});
+
+// Permitir que al hacer clic en el ícono se abra el calendario
+document.getElementById("calendarIcon").addEventListener("click", () => {
+  document.getElementById("date")._flatpickr.open();
 });
