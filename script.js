@@ -120,6 +120,12 @@ function updatePromedio() {
         promedioDiv.textContent = "Promedio de Notas: N/A";
         return;
     }
+function updateCount() {
+  const count = students.length;
+  const countText = document.getElementById("countText");
+  animateCount(countText, count);
+}
+
     const total = students.reduce((sum, s) => sum + s.grade, 0);
     const promedio = total / students.length;
     promedioDiv.textContent = `Promedio de Notas: ${promedio.toFixed(2)}`;
@@ -172,3 +178,22 @@ flatpickr("#date", {
 document.getElementById("calendarIcon").addEventListener("click", () => {
   document.getElementById("date")._flatpickr.open();
 });
+
+function animateCount(element, to) {
+  const duration = 800;
+  const frameRate = 30;
+  const totalFrames = Math.round(duration / (1000 / frameRate));
+  let frame = 0;
+  const from = parseInt(element.textContent) || 0;
+
+  const counter = setInterval(() => {
+    frame++;
+    const progress = frame / totalFrames;
+    const current = Math.round(from + (to - from) * progress);
+    element.textContent = `${current} estudiante${current !== 1 ? 's' : ''} registrado${current !== 1 ? 's' : ''}`;
+
+    if (frame === totalFrames) {
+      clearInterval(counter);
+    }
+  }, 1000 / frameRate);
+}

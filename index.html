@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Notas Front-End</title>
   <link rel="stylesheet" href="estilo.css" />
+  
 
   <!-- FontAwesome para íconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -13,11 +14,43 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 </head>
 <body>
+
+<div id="pokemon-background">
+  <!-- Pokémon distribuidos en diferentes posiciones -->
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="pokemon" style="top: 5%; left: 5%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" class="pokemon" style="top: 10%; left: 30%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" class="pokemon" style="top: 15%; left: 60%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="pokemon" style="top: 20%; left: 85%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" class="pokemon" style="top: 30%; left: 15%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" class="pokemon" style="top: 35%; left: 40%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png" class="pokemon" style="top: 40%; left: 70%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/92.png" class="pokemon" style="top: 45%; left: 90%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png" class="pokemon" style="top: 50%; left: 10%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png" class="pokemon" style="top: 55%; left: 35%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" class="pokemon" style="top: 60%; left: 60%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png" class="pokemon" style="top: 65%; left: 85%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/175.png" class="pokemon" style="top: 70%; left: 20%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/183.png" class="pokemon" style="top: 75%; left: 45%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/196.png" class="pokemon" style="top: 80%; left: 70%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/197.png" class="pokemon" style="top: 85%; left: 95%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/258.png" class="pokemon" style="top: 90%; left: 10%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/280.png" class="pokemon" style="top: 93%; left: 35%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/309.png" class="pokemon" style="top: 96%; left: 65%;">
+  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/387.png" class="pokemon" style="top: 99%; left: 90%;">
+</div>
+
+
+
   <div class="container">
     <h2>Seguimiento de Notas de Estudiantes</h2>
 
     <div id="average" class="average">Promedio de Notas: N/A</div>
-    <div id="totalCount" class="average">0 estudiantes registrados</div>
+
+    <div id="totalCount" class="student-count">
+    <i class="fas fa-users"></i>
+    <span id="countText">0 estudiantes registrados</span>
+    </div>
+
 
     <form id="studentForm" novalidate>
       <div class="form-group input-icon">
