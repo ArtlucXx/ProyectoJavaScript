@@ -128,8 +128,8 @@ function updatePromedio() {
 
 function updateCount() {
   const total = students.length;
-  const debenExamen = students.filter(s => s.grade < 4.0).length;
-  const eximidos = students.filter(s => s.grade > 5.0).length;
+  const debenExamen = students.filter(s => s.grade < 4).length;
+  const eximidos = students.filter(s => s.grade >= 5).length;
 
   document.getElementById("countText").textContent = `${total} estudiante${total !== 1 ? 's' : ''} registrado${total !== 1 ? 's' : ''}`;
   document.getElementById("examenText").textContent = `${debenExamen} deben rendir examen`;
