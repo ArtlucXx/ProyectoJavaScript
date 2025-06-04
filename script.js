@@ -128,13 +128,14 @@ function updatePromedio() {
 
 function updateCount() {
   const total = students.length;
-  const debenExamen = students.filter(s => s.grade < 4).length;
-  const eximidos = students.filter(s => s.grade >= 5).length;
+  const debenExamen = students.filter(s => s.grade >= 1 && s.grade < 5).length;
+  const eximidos = students.filter(s => s.grade >= 5 && s.grade <= 7).length;
 
   document.getElementById("countText").textContent = `${total} estudiante${total !== 1 ? 's' : ''} registrado${total !== 1 ? 's' : ''}`;
   document.getElementById("examenText").textContent = `${debenExamen} deben rendir examen`;
   document.getElementById("eximidosText").textContent = `${eximidos} están eximidos`;
 }
+
 
 function formatDate(dateString) {
   const [year, month, day] = dateString.split("-");
